@@ -6,13 +6,19 @@ from game_play import GamePlay
 
 class Tetris:
     def __init__(self):
-        self.screen = pygame.display.set_mode(pygame.image.load("Resource/gameplay_background.png").get_size())
+        square_offset = 1
+        square_length = 30
+        play_area_w, play_area_l = square_length * 10 + square_offset * 11, square_length * 20 + square_offset * 21
+        bgd_image_w, bgd_image_l = pygame.image.load("Resource/gameplay_background.png").get_size()
+        screen_size = ((play_area_w * bgd_image_w) / 318.3, (play_area_l * bgd_image_l) / 548.4)
+        print(screen_size)
+        self.screen = pygame.display.set_mode(screen_size)
         pygame.display.set_caption("Tetris")
         pygame.display.set_icon(pygame.image.load("Resource/icon.png").convert_alpha())
         self.speed = 60
         self.clock = pygame.time.Clock()
         self.game_state = "game_play"
-        self.game_play = GamePlay(self.screen)
+        self.game_play = GamePlay(self.screen, square_length, square_offset)
 
     def game_state_selector(self):
         if self.game_state == "game_play":
