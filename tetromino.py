@@ -19,16 +19,6 @@ class Tetromino_I:
         ]
         self.rotation_steps = len(self.rotation)
 
-    def rotate(self):
-        print("Rotate I")
-        list_xy = np.array(sorted([(square.grid_pos_x, square.grid_pos_y) for square in self.tetromino]))
-        # print(list_xy)
-        rotated_list_xy = np.add(list_xy, self.rotation[self.rotate_position])
-        self.rotate_position += 1
-        self.rotate_position %= self.rotation_steps
-        for i in range(4):
-            self.tetromino[i].set_xy(rotated_list_xy[i][0], rotated_list_xy[i][1])
-
 
 class Tetromino_O:
     def __init__(self, cell_points_gap, square_length, cell_start_point):
@@ -36,9 +26,9 @@ class Tetromino_O:
         for i in range(4, 6):
             for j in range(2):
                 self.tetromino.append(Square(i, j, cell_points_gap, square_length, cell_start_point))
-
-    def rotate(self):
-        pass
+        self.rotate_position = 0
+        self.rotation = [np.array([[0, 0], [0, 0], [0, 0], [0, 0]])]
+        self.rotation_steps = len(self.rotation)
 
 
 class Tetromino_T:
@@ -57,16 +47,6 @@ class Tetromino_T:
         ]
         self.rotation_steps = len(self.rotation)
 
-    def rotate(self):
-        print("Rotate T")
-        list_xy = np.array(sorted([(square.grid_pos_x, square.grid_pos_y) for square in self.tetromino]))
-        # print(list_xy)
-        rotated_list_xy = np.add(list_xy, self.rotation[self.rotate_position])
-        self.rotate_position += 1
-        self.rotate_position %= self.rotation_steps
-        for i in range(4):
-            self.tetromino[i].set_xy(rotated_list_xy[i][0], rotated_list_xy[i][1])
-
 
 class Tetromino_J:
     def __init__(self, cell_points_gap, square_length, cell_start_point):
@@ -84,16 +64,6 @@ class Tetromino_J:
         ]
         self.rotation_steps = len(self.rotation)
 
-    def rotate(self):
-        print("Rotate J")
-        list_xy = np.array(sorted([(square.grid_pos_x, square.grid_pos_y) for square in self.tetromino]))
-        # print(list_xy)
-        rotated_list_xy = np.add(list_xy, self.rotation[self.rotate_position])
-        self.rotate_position += 1
-        self.rotate_position %= self.rotation_steps
-        for i in range(4):
-            self.tetromino[i].set_xy(rotated_list_xy[i][0], rotated_list_xy[i][1])
-
 
 class Tetromino_L:
     def __init__(self, cell_points_gap, square_length, cell_start_point):
@@ -110,16 +80,6 @@ class Tetromino_L:
             np.array([[-1, 0], [-2, 1], [-1, -1], [0, -2]])
         ]
         self.rotation_steps = len(self.rotation)
-
-    def rotate(self):
-        print("Rotate L")
-        list_xy = np.array(sorted([(square.grid_pos_x, square.grid_pos_y) for square in self.tetromino]))
-        # print(list_xy)
-        rotated_list_xy = np.add(list_xy, self.rotation[self.rotate_position])
-        self.rotate_position += 1
-        self.rotate_position %= self.rotation_steps
-        for i in range(4):
-            self.tetromino[i].set_xy(rotated_list_xy[i][0], rotated_list_xy[i][1])
 
 
 class Tetromino_S:
@@ -140,16 +100,6 @@ class Tetromino_S:
         ]
         self.rotation_steps = len(self.rotation)
 
-    def rotate(self):
-        print("Rotate S")
-        list_xy = np.array(sorted([(square.grid_pos_x, square.grid_pos_y) for square in self.tetromino]))
-        # print(list_xy)
-        rotated_list_xy = np.add(list_xy, self.rotation[self.rotate_position])
-        self.rotate_position += 1
-        self.rotate_position %= self.rotation_steps
-        for i in range(4):
-            self.tetromino[i].set_xy(rotated_list_xy[i][0], rotated_list_xy[i][1])
-
 
 class Tetromino_Z:
     def __init__(self, cell_points_gap, square_length, cell_start_point):
@@ -169,16 +119,6 @@ class Tetromino_Z:
         ]
         self.rotation_steps = len(self.rotation)
 
-    def rotate(self):
-        print("Rotate Z")
-        list_xy = np.array(sorted([(square.grid_pos_x, square.grid_pos_y) for square in self.tetromino]))
-        # print(list_xy)
-        rotated_list_xy = np.add(list_xy, self.rotation[self.rotate_position])
-        self.rotate_position += 1
-        self.rotate_position %= self.rotation_steps
-        for i in range(4):
-            self.tetromino[i].set_xy(rotated_list_xy[i][0], rotated_list_xy[i][1])
-
 
 class Tetromino(pygame.sprite.Group):
     def __init__(self, cell_points_gap, square_length, cell_start_point):
@@ -194,8 +134,18 @@ class Tetromino(pygame.sprite.Group):
         self.add(self.random_tetromino.tetromino)
         self.prev = None
 
-    def rotate(self):
-        self.random_tetromino.rotate()
+    def rotate(self, square_group):
+        list_xy = np.array(sorted([(square.grid_pos_x, square.grid_pos_y)
+                                   for square in self.random_tetromino.tetromino]))
+        # print(list_xy)
+        rotated_list_xy = np.add(list_xy, self.random_tetromino.rotation[self.random_tetromino.rotate_position])
+        for i in range(4):
+            if self.random_tetromino.tetromino[i].set_xy(rotated_list_xy[i][0], rotated_list_xy[i][1], square_group):
+                for j in range(4):
+                    self.random_tetromino.tetromino[j].set_xy(list_xy[j][0], list_xy[j][1], SquareRowGroup())
+                return
+        self.random_tetromino.rotate_position += 1
+        self.random_tetromino.rotate_position %= self.random_tetromino.rotation_steps
 
     def check(self):
         current = np.array(sorted([(square.grid_pos_x, square.grid_pos_y)

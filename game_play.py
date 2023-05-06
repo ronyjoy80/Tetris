@@ -42,7 +42,7 @@ class GamePlay:
                 elif event.key == pygame.K_UP:
                     self.tetromino.update("UP", self.tetromino, SquareRowGroup())
                 elif event.key == pygame.K_r:
-                    self.tetromino.rotate()
+                    self.tetromino.rotate(sum([_.sprites() for _ in self.square_row_group], []))
                 elif event.key == pygame.K_t:
                     self.tetromino.check()
         if not self.tetromino.movement:

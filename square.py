@@ -15,11 +15,17 @@ class Square(pygame.sprite.Sprite):
         self.rect.topleft = (self.cell_start_point[0] + self.grid_pos_x * self.cell_points_gap,
                              self.cell_start_point[1] + self.grid_pos_y * self.cell_points_gap)
 
-    def set_xy(self, x, y):
-        self.grid_pos_x = x
-        self.grid_pos_y = y
-        self.rect.topleft = (self.cell_start_point[0] + self.grid_pos_x * self.cell_points_gap,
-                             self.cell_start_point[1] + self.grid_pos_y * self.cell_points_gap)
+    def set_xy(self, x, y, square_group):
+        if 0 <= x <= 9 and 0 <= y <= 19:
+            self.grid_pos_x = x
+            self.grid_pos_y = y
+            self.rect.topleft = (self.cell_start_point[0] + self.grid_pos_x * self.cell_points_gap,
+                                 self.cell_start_point[1] + self.grid_pos_y * self.cell_points_gap)
+        else:
+            return True
+        if len(pygame.sprite.spritecollide(self, square_group, False)) != 0:
+            return True
+        return False
 
     def reverse_update(self, direction):
         if direction == "LEFT":
