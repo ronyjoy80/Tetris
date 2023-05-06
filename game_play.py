@@ -1,6 +1,6 @@
 import pygame
 
-from tetromino import Tetromino
+from tetromino import Tetromino, SquareRowGroup
 
 
 class GamePlay:
@@ -23,7 +23,8 @@ class GamePlay:
         # self.surface = pygame.Surface(self.play_area_size)
         # self.surface.fill((0, 255, 0))
 
-        self.tetr = Tetromino(self.cell_points_gap, self.square_length, self.first_cell_point)
+        self.tetromino = Tetromino(self.cell_points_gap, self.square_length, self.first_cell_point)
+        self.square_row_group = [SquareRowGroup() for _ in range(20)]
 
     def run(self):
         for event in pygame.event.get():
@@ -32,10 +33,38 @@ class GamePlay:
                 exit()
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_DOWN:
-                    self.tetr.update(10)
+                    self.tetromino.update("DOWN", self.tetromino, sum([_.sprites() for _ in self.square_row_group], []))
+                elif event.key == pygame.K_LEFT:
+                    self.tetromino.update("LEFT", self.tetromino, sum([_.sprites() for _ in self.square_row_group], []))
+                elif event.key == pygame.K_RIGHT:
+                    self.tetromino.update("RIGHT", self.tetromino,
+                                          sum([_.sprites() for _ in self.square_row_group], []))
+                elif event.key == pygame.K_UP:
+                    self.tetromino.update("UP", self.tetromino, SquareRowGroup())
+                elif event.key == pygame.K_r:
+                    self.tetromino.rotate()
+                elif event.key == pygame.K_t:
+                    self.tetromino.check()
+        if not self.tetromino.movement:
+            for sprite in self.tetromino.sprites():
+                self.square_row_group[sprite.grid_pos_y].add(sprite)
+                self.square_row_group[sprite.grid_pos_y].num_of_square += 1
+            count = 0
+            for row in range(20):
+                if self.square_row_group[row].num_of_square == 10:
+                    for sprite in self.square_row_group[row].sprites():
+                        sprite.kill()
+                    for group in self.square_row_group[:row]:
+                        group.update("DOWN", group, self.square_row_group[row])
+                    del self.square_row_group[row]
+                    self.square_row_group = [SquareRowGroup()] + self.square_row_group
+            self.tetromino.empty()
+            self.tetromino = Tetromino(self.cell_points_gap, self.square_length, self.first_cell_point)
             # elif event.type == pygame.MOUSEBUTTONDOWN:
             #     print(pygame.mouse.get_pos())
         self.screen.blit(self.bgd_image, (0, 0))
         # self.screen.blit(self.surface, self.play_area_start_point)
-        self.tetr.draw(self.screen)
-        return 60  # speed
+        self.tetromino.draw(self.screen)
+        for i in range(20):
+            self.square_row_group[i].draw(self.screen)
+        return 120  # speed
