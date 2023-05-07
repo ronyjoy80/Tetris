@@ -10,9 +10,10 @@ WHITE = (255, 255, 255)
 
 class Tetris:
     def __init__(self):
-        square_offset = 1
-        square_length = 30
-        play_area_w, play_area_l = square_length * 10 + square_offset * 11, square_length * 20 + square_offset * 21
+        self.square_offset = 1
+        self.square_length = 30
+        play_area_w = self.square_length * 10 + self.square_offset * 11
+        play_area_l = self.square_length * 20 + self.square_offset * 21
         bgd_image_w, bgd_image_l = pygame.image.load("Resource/gameplay_background.png").get_size()
         screen_size = ((play_area_w * bgd_image_w) / 318.3, (play_area_l * bgd_image_l) / 548.4)
         print(screen_size)
@@ -28,7 +29,7 @@ class Tetris:
         self.start_page_bdg = pygame.transform.scale(image, self.screen.get_size())
         self.image_press_enter = draw_text_topleft("PRESS ENTER", WHITE, (225, 575), 30)
 
-        self.game_play = GamePlay(self.screen, square_length, square_offset)
+        self.game_play = None
         self.score = 0
         self.level = 0
 
@@ -42,6 +43,7 @@ class Tetris:
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
                     self.game_state = "game_play"
+                    self.game_play = GamePlay(self.screen, self.square_length, self.square_offset)
         self.screen.blit(self.start_page_bdg, (0, 0))
         self.screen.blit(self.image_press_enter[0], self.image_press_enter[1])
 
@@ -59,6 +61,8 @@ class Tetris:
         elif self.game_state == "end_page":
             self.speed = 60
             self.end_page.run()
+            if self.end_page.restart:
+                self.game_state = "start_page"
 
     def run(self):
         while True:

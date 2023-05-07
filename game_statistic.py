@@ -13,27 +13,28 @@ class GameStatistic:
         square_length = kwargs["square_length"]
         point_first_tetromino = list(kwargs["point_first_tetromino"])
         gap_tetromino = kwargs["gap_tetromino"]
+        color = kwargs["color"]
         self.gap_count = kwargs["gap_count"]
         self.tetromino_count = kwargs["tetromino_count"]
         self.image_statistic = draw_text_topleft("STATISTIC", WHITE, kwargs["point_statistic"], 27)
         self.tetromino = []
         self.tetromino.append(Tetromino(cell_points_gap, square_length,
-                                        tuple(point_first_tetromino), move_to_center=False, shape="T"))
+                                        tuple(point_first_tetromino), color, move_to_center=False, shape="T"))
         point_first_tetromino[1] += gap_tetromino
         self.tetromino.append(Tetromino(cell_points_gap, square_length,
-                                        tuple(point_first_tetromino), move_to_center=False, shape="J"))
+                                        tuple(point_first_tetromino), color, move_to_center=False, shape="J"))
         point_first_tetromino[1] += gap_tetromino
         self.tetromino.append(Tetromino(cell_points_gap, square_length,
-                                        tuple(point_first_tetromino), move_to_center=False, shape="Z"))
+                                        tuple(point_first_tetromino), color, move_to_center=False, shape="Z"))
         point_first_tetromino[1] += gap_tetromino
         self.tetromino.append(Tetromino(cell_points_gap, square_length,
-                                        tuple(point_first_tetromino), move_to_center=False, shape="O"))
+                                        tuple(point_first_tetromino), color, move_to_center=False, shape="O"))
         point_first_tetromino[1] += gap_tetromino
         self.tetromino.append(Tetromino(cell_points_gap, square_length,
-                                        tuple(point_first_tetromino), move_to_center=False, shape="S"))
+                                        tuple(point_first_tetromino), color, move_to_center=False, shape="S"))
         point_first_tetromino[1] += gap_tetromino
         self.tetromino.append(Tetromino(cell_points_gap, square_length,
-                                        tuple(point_first_tetromino), move_to_center=False, shape="L"))
+                                        tuple(point_first_tetromino), color, move_to_center=False, shape="L"))
 
     def draw_statistic(self):
         self.screen.blit(self.image_statistic[0], self.image_statistic[1])

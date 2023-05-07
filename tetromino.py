@@ -6,11 +6,11 @@ from square import Square
 
 
 class Tetromino_I:
-    def __init__(self, cell_points_gap, square_length, cell_start_point):
+    def __init__(self, cell_points_gap, square_length, cell_start_point, color, design):
         self.shape = "I"
         self.tetromino = []
         for i in range(4):
-            self.tetromino.append(Square(i, 0, cell_points_gap, square_length, cell_start_point))
+            self.tetromino.append(Square(i, 0, cell_points_gap, square_length, cell_start_point, color, design))
         self.rotate_position = 0
         self.rotation = [
             np.array([[1, -1], [0, 0], [-1, 1], [-2, 2]]),
@@ -27,12 +27,12 @@ class Tetromino_I:
 
 
 class Tetromino_O:
-    def __init__(self, cell_points_gap, square_length, cell_start_point):
+    def __init__(self, cell_points_gap, square_length, cell_start_point, color, design):
         self.shape = "O"
         self.tetromino = []
         for i in range(2):
             for j in range(2):
-                self.tetromino.append(Square(i, j, cell_points_gap, square_length, cell_start_point))
+                self.tetromino.append(Square(i, j, cell_points_gap, square_length, cell_start_point, color, design))
         self.rotate_position = 0
         self.rotation = [np.array([[0, 0], [0, 0], [0, 0], [0, 0]])]
         self.rotation_steps = len(self.rotation)
@@ -44,12 +44,12 @@ class Tetromino_O:
 
 
 class Tetromino_T:
-    def __init__(self, cell_points_gap, square_length, cell_start_point):
+    def __init__(self, cell_points_gap, square_length, cell_start_point, color, design):
         self.shape = "T"
         self.tetromino = []
         for i in range(3):
-            self.tetromino.append(Square(i, 0, cell_points_gap, square_length, cell_start_point))
-        self.tetromino.append(Square(1, 1, cell_points_gap, square_length, cell_start_point))
+            self.tetromino.append(Square(i, 0, cell_points_gap, square_length, cell_start_point, color, design))
+        self.tetromino.append(Square(1, 1, cell_points_gap, square_length, cell_start_point, color, design))
         self.rotate_position = 0
         self.rotation = [
             np.array([[1, -1], [0, 0], [0, 0], [0, 0]]),
@@ -67,12 +67,12 @@ class Tetromino_T:
 
 
 class Tetromino_J:
-    def __init__(self, cell_points_gap, square_length, cell_start_point):
+    def __init__(self, cell_points_gap, square_length, cell_start_point, color, design):
         self.shape = "J"
         self.tetromino = []
         for i in range(3):
-            self.tetromino.append(Square(i, 0, cell_points_gap, square_length, cell_start_point))
-        self.tetromino.append(Square(2, 1, cell_points_gap, square_length, cell_start_point))
+            self.tetromino.append(Square(i, 0, cell_points_gap, square_length, cell_start_point, color, design))
+        self.tetromino.append(Square(2, 1, cell_points_gap, square_length, cell_start_point, color, design))
         self.rotate_position = 0
         self.rotation = [
             np.array([[0, 0], [-1, 1], [-2, 2], [-1, -1]]),
@@ -90,12 +90,12 @@ class Tetromino_J:
 
 
 class Tetromino_L:
-    def __init__(self, cell_points_gap, square_length, cell_start_point):
+    def __init__(self, cell_points_gap, square_length, cell_start_point, color, design):
         self.shape = "L"
         self.tetromino = []
         for i in range(3):
-            self.tetromino.append(Square(i, 0, cell_points_gap, square_length, cell_start_point))
-        self.tetromino.append(Square(0, 1, cell_points_gap, square_length, cell_start_point))
+            self.tetromino.append(Square(i, 0, cell_points_gap, square_length, cell_start_point, color, design))
+        self.tetromino.append(Square(0, 1, cell_points_gap, square_length, cell_start_point, color, design))
         self.rotate_position = 0
         self.rotation = [
             np.array([[0, 0], [0, 0], [-1, 2], [-1, 2]]),
@@ -113,13 +113,13 @@ class Tetromino_L:
 
 
 class Tetromino_S:
-    def __init__(self, cell_points_gap, square_length, cell_start_point):
+    def __init__(self, cell_points_gap, square_length, cell_start_point, color, design):
         self.shape = "S"
         self.tetromino = [
-            Square(1, 0, cell_points_gap, square_length, cell_start_point),
-            Square(2, 0, cell_points_gap, square_length, cell_start_point),
-            Square(0, 1, cell_points_gap, square_length, cell_start_point),
-            Square(1, 1, cell_points_gap, square_length, cell_start_point)
+            Square(1, 0, cell_points_gap, square_length, cell_start_point, color, design),
+            Square(2, 0, cell_points_gap, square_length, cell_start_point, color, design),
+            Square(0, 1, cell_points_gap, square_length, cell_start_point, color, design),
+            Square(1, 1, cell_points_gap, square_length, cell_start_point, color, design)
         ]
         self.rotate_position = 0
         self.rotation = [
@@ -138,13 +138,13 @@ class Tetromino_S:
 
 
 class Tetromino_Z:
-    def __init__(self, cell_points_gap, square_length, cell_start_point):
+    def __init__(self, cell_points_gap, square_length, cell_start_point, color, design):
         self.shape = "Z"
         self.tetromino = [
-            Square(0, 0, cell_points_gap, square_length, cell_start_point),
-            Square(1, 0, cell_points_gap, square_length, cell_start_point),
-            Square(1, 1, cell_points_gap, square_length, cell_start_point),
-            Square(2, 1, cell_points_gap, square_length, cell_start_point)
+            Square(0, 0, cell_points_gap, square_length, cell_start_point, color, design),
+            Square(1, 0, cell_points_gap, square_length, cell_start_point, color, design),
+            Square(1, 1, cell_points_gap, square_length, cell_start_point, color, design),
+            Square(2, 1, cell_points_gap, square_length, cell_start_point, color, design)
         ]
         self.rotate_position = 0
         self.rotation = [
@@ -163,9 +163,11 @@ class Tetromino_Z:
 
 
 class Tetromino(pygame.sprite.Group):
-    def __init__(self, cell_points_gap, square_length, grid_start_point,
+    def __init__(self, cell_points_gap, square_length, grid_start_point, colors,
                  move_to_center=True, shape="RANDOM", sprites=None):
         super().__init__()
+        design = (random.randrange(2), random.randrange(2))
+        color = colors[design[0]]
         self.grid_start_point = grid_start_point
         self.movement = True
         self.collision = False
@@ -173,23 +175,23 @@ class Tetromino(pygame.sprite.Group):
         self.updated_sprites = []
         self.count_sprite_update = 0
         if shape == "Z":
-            self.tetromino_object = Tetromino_Z(cell_points_gap, square_length, grid_start_point)
+            self.tetromino_object = Tetromino_Z(cell_points_gap, square_length, grid_start_point, color, design)
         elif shape == "O":
-            self.tetromino_object = Tetromino_O(cell_points_gap, square_length, grid_start_point)
+            self.tetromino_object = Tetromino_O(cell_points_gap, square_length, grid_start_point, color, design)
         elif shape == "I":
-            self.tetromino_object = Tetromino_I(cell_points_gap, square_length, grid_start_point)
+            self.tetromino_object = Tetromino_I(cell_points_gap, square_length, grid_start_point, color, design)
         elif shape == "J":
-            self.tetromino_object = Tetromino_J(cell_points_gap, square_length, grid_start_point)
+            self.tetromino_object = Tetromino_J(cell_points_gap, square_length, grid_start_point, color, design)
         elif shape == "L":
-            self.tetromino_object = Tetromino_L(cell_points_gap, square_length, grid_start_point)
+            self.tetromino_object = Tetromino_L(cell_points_gap, square_length, grid_start_point, color, design)
         elif shape == "S":
-            self.tetromino_object = Tetromino_S(cell_points_gap, square_length, grid_start_point)
+            self.tetromino_object = Tetromino_S(cell_points_gap, square_length, grid_start_point, color, design)
         elif shape == "T":
-            self.tetromino_object = Tetromino_T(cell_points_gap, square_length, grid_start_point)
+            self.tetromino_object = Tetromino_T(cell_points_gap, square_length, grid_start_point, color, design)
         else:
             self.tetromino_object = random.choice([Tetromino_Z, Tetromino_O, Tetromino_I, Tetromino_J,
-                                                   Tetromino_L, Tetromino_S,
-                                                   Tetromino_T])(cell_points_gap, square_length, grid_start_point)
+                                                   Tetromino_L, Tetromino_S, Tetromino_T
+                                                   ])(cell_points_gap, square_length, grid_start_point, color, design)
         # self.random_tetromino = Tetromino_L(cell_points_gap, square_length, cell_start_point)
         print(self.tetromino_object.shape)
         if move_to_center:
