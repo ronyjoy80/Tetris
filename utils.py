@@ -27,5 +27,5 @@ def load_table(file):
 
 def get_top_score():
     f = open("Resource/high_score.txt", 'r')
-    return f.readline().strip().split()[-1]
+    return f.readline().strip().split()[-2]
 
