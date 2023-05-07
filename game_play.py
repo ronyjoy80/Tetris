@@ -2,6 +2,7 @@ import pygame
 
 from game_statistic import GameStatistic
 from tetromino import Tetromino, SquareRowGroup
+from utils import draw_text_topleft, load_table, get_top_score
 
 WHITE = (255, 255, 255)
 
@@ -25,6 +26,15 @@ class GamePlay:
 
         self.pause = False
         self.game_over = False
+        self.score = 0
+        self.points = [0, 40, 100, 300, 1200]
+        self.level = 0
+        self.prev_level_lines = 0
+        self.lines = 0
+        self.level_speed = load_table("Resource/level_speed.txt")
+        self.cycle_time = 60
+        self.speed = self.cycle_time / self.level_speed[self.level]
+        self.level_change = load_table("Resource/level_change.txt")
         # self.surface = pygame.Surface(self.play_area_size)
         # self.surface.fill((0, 255, 0))
 
@@ -40,9 +50,8 @@ class GamePlay:
                                             tetromino_count=self.tetromino_count,
                                             gap_tetromino=75,
                                             gap_count=120)
-        self.image_next_point = (765, 380)
-        self.image_next = pygame.font.Font("Resource/arcade.ttf", 23).render("NEXT",
-                                                                             True, WHITE).convert_alpha()
+
+        self.image_next = draw_text_topleft("NEXT", WHITE, (750, 380), 30)
         self.next_tetromino_point = (767, 440)
         self.next_tetromino_display = {shape: Tetromino(self.cell_points_gap, self.square_length,
                                                         self.next_tetromino_point, move_to_center=False, shape=shape)
@@ -52,11 +61,27 @@ class GamePlay:
         self.next_tetromino_display["I"] = Tetromino(self.cell_points_gap, self.square_length,
                                                      (751, 440), move_to_center=False, shape="I")
 
+        self.image_lines = draw_text_topleft("LINES-", WHITE, (380, 60), 30)
+        self.image_lines_count = draw_text_topleft(f"{self.lines:03}", WHITE, (580, 60), 30)
+
+        self.image_game_mode = draw_text_topleft("SINGLE", WHITE, (113, 93), 25)
+
+        score_board_x, score_board_y = 750, 80
+        self.image_top_score = draw_text_topleft("TOP", WHITE, (score_board_x, score_board_y), 30)
+        self.image_top_score_val = draw_text_topleft(get_top_score(), WHITE, (score_board_x, score_board_y + 40), 30)
+        self.image_score = draw_text_topleft("SCORE", WHITE, (score_board_x,  score_board_y + 110), 30)
+        self.image_score_val = draw_text_topleft("000000", WHITE, (score_board_x, score_board_y + 150), 30)
+
+        level_x, level_y = 750, 586
+        self.image_level = draw_text_topleft("LEVEL", WHITE, (level_x, level_y), 27)
+        self.image_level_val = draw_text_topleft("00", WHITE, (level_x + 55, level_y + 40), 27)
+
     def tetromino_to_square_row_group(self):
         for sprite in self.tetromino.sprites():
             self.square_row_group[sprite.grid_pos_y].add(sprite)
             self.square_row_group[sprite.grid_pos_y].num_of_square += 1
         count = 0
+        prev_score = self.score
         for row in range(20):
             if self.square_row_group[row].num_of_square == 10:
                 count += 1
@@ -66,6 +91,24 @@ class GamePlay:
                     group.update("DOWN", group, self.square_row_group[row])
                 del self.square_row_group[row]
                 self.square_row_group = [SquareRowGroup()] + self.square_row_group
+        self.score += (self.level + 1) * self.points[count]
+        self.lines += count
+        if self.level < 26:
+            if self.level_change[self.level] < self.lines - self.prev_level_lines:
+                self.prev_level_lines += self.level_change[self.level]
+                self.level += 1
+                self.image_level_val = draw_text_topleft(f"{self.level:02}", WHITE, self.image_level_val[1].topleft, 27)
+                self.speed = self.cycle_time / self.level_speed[self.level]
+        else:
+            if 200 < self.lines - self.prev_level_lines:
+                self.prev_level_lines += 200
+                self.level += 1
+                self.image_level_val = draw_text_topleft(f"{self.level:02}", WHITE, self.image_level_val[1].topleft, 27)
+                if self.level < 30:
+                    self.speed = self.cycle_time / self.level_speed[self.level]
+        if prev_score != self.score:
+            self.image_score_val = draw_text_topleft(f"{self.score:06}", WHITE, self.image_score_val[1].topleft, 30)
+            self.image_lines_count = draw_text_topleft(f"{self.lines:03}", WHITE, self.image_lines_count[1].topleft, 30)
         self.tetromino.empty()
 
     def new_tetromino(self):
@@ -79,6 +122,9 @@ class GamePlay:
             # print(self.next_tetromino.failed_to_place)
             if self.next_tetromino.failed_to_place:
                 self.game_over = True
+
+    def blit_rect(self, image):
+        self.screen.blit(image[0], image[1])
 
     def run(self):
         for event in pygame.event.get():
@@ -98,10 +144,12 @@ class GamePlay:
                     self.tetromino.update("UP", self.tetromino, SquareRowGroup())
                 elif event.key == pygame.K_r:
                     self.tetromino.rotate(sum([_.sprites() for _ in self.square_row_group], []))
-                elif event.key == pygame.K_t:
+                elif event.key == pygame.K_h:
                     self.tetromino.check()
                 elif event.key == pygame.K_p:
                     self.pause = not self.pause
+                elif event.key == pygame.K_g:
+                    self.game_over = True
                 elif event.key in [pygame.K_i, pygame.K_o, pygame.K_j, pygame.K_l, pygame.K_z, pygame.K_s, pygame.K_t]:
                     # noinspection PyTypeChecker
                     self.next_tetromino = Tetromino(self.cell_points_gap, self.square_length, self.grid_start_point,
@@ -120,7 +168,22 @@ class GamePlay:
         self.tetromino.draw(self.screen)
         for i in range(20):
             self.square_row_group[i].draw(self.screen)
+
         self.game_statistic.draw_statistic()
-        self.screen.blit(self.image_next, self.image_next_point)
+
+        self.blit_rect(self.image_next)
         self.next_tetromino_display[self.next_tetromino.get_shape()].draw(self.screen)
-        return 8  # speed
+
+        self.blit_rect(self.image_lines)
+        self.blit_rect(self.image_lines_count)
+        self.blit_rect(self.image_game_mode)
+
+        self.blit_rect(self.image_top_score)
+        self.blit_rect(self.image_top_score_val)
+        self.blit_rect(self.image_score)
+        self.blit_rect(self.image_score_val)
+
+        self.blit_rect(self.image_level)
+        self.blit_rect(self.image_level_val)
+
+        return self.speed
