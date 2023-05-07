@@ -7,8 +7,9 @@ from square import Square
 
 class Tetromino_I:
     def __init__(self, cell_points_gap, square_length, cell_start_point):
+        self.shape = "I"
         self.tetromino = []
-        for i in range(3, 7):
+        for i in range(4):
             self.tetromino.append(Square(i, 0, cell_points_gap, square_length, cell_start_point))
         self.rotate_position = 0
         self.rotation = [
@@ -19,25 +20,36 @@ class Tetromino_I:
         ]
         self.rotation_steps = len(self.rotation)
 
+    def move_to_center(self):
+        for i in range(4):
+            self.tetromino[i].grid_pos_x += 3
+            self.tetromino[i].update_rect_topleft()
+
 
 class Tetromino_O:
     def __init__(self, cell_points_gap, square_length, cell_start_point):
+        self.shape = "O"
         self.tetromino = []
-        for i in range(4, 6):
+        for i in range(2):
             for j in range(2):
                 self.tetromino.append(Square(i, j, cell_points_gap, square_length, cell_start_point))
         self.rotate_position = 0
         self.rotation = [np.array([[0, 0], [0, 0], [0, 0], [0, 0]])]
         self.rotation_steps = len(self.rotation)
 
+    def move_to_center(self):
+        for i in range(4):
+            self.tetromino[i].grid_pos_x += 4
+            self.tetromino[i].update_rect_topleft()
+
 
 class Tetromino_T:
     def __init__(self, cell_points_gap, square_length, cell_start_point):
-        offset = random.randrange(0, 2)
+        self.shape = "T"
         self.tetromino = []
-        for i in range(3, 6):
-            self.tetromino.append(Square(offset + i, 0, cell_points_gap, square_length, cell_start_point))
-        self.tetromino.append(Square(offset + 4, 1, cell_points_gap, square_length, cell_start_point))
+        for i in range(3):
+            self.tetromino.append(Square(i, 0, cell_points_gap, square_length, cell_start_point))
+        self.tetromino.append(Square(1, 1, cell_points_gap, square_length, cell_start_point))
         self.rotate_position = 0
         self.rotation = [
             np.array([[1, -1], [0, 0], [0, 0], [0, 0]]),
@@ -47,14 +59,20 @@ class Tetromino_T:
         ]
         self.rotation_steps = len(self.rotation)
 
+    def move_to_center(self):
+        offset = random.randrange(0, 2)
+        for i in range(4):
+            self.tetromino[i].grid_pos_x += 3 + offset
+            self.tetromino[i].update_rect_topleft()
+
 
 class Tetromino_J:
     def __init__(self, cell_points_gap, square_length, cell_start_point):
-        offset = random.randrange(0, 2)
+        self.shape = "J"
         self.tetromino = []
-        for i in range(3, 6):
-            self.tetromino.append(Square(offset + i, 0, cell_points_gap, square_length, cell_start_point))
-        self.tetromino.append(Square(offset + 5, 1, cell_points_gap, square_length, cell_start_point))
+        for i in range(3):
+            self.tetromino.append(Square(i, 0, cell_points_gap, square_length, cell_start_point))
+        self.tetromino.append(Square(2, 1, cell_points_gap, square_length, cell_start_point))
         self.rotate_position = 0
         self.rotation = [
             np.array([[0, 0], [-1, 1], [-2, 2], [-1, -1]]),
@@ -64,14 +82,20 @@ class Tetromino_J:
         ]
         self.rotation_steps = len(self.rotation)
 
+    def move_to_center(self):
+        offset = random.randrange(0, 2)
+        for i in range(4):
+            self.tetromino[i].grid_pos_x += 3 + offset
+            self.tetromino[i].update_rect_topleft()
+
 
 class Tetromino_L:
     def __init__(self, cell_points_gap, square_length, cell_start_point):
-        offset = random.randrange(0, 2)
+        self.shape = "L"
         self.tetromino = []
-        for i in range(3, 6):
-            self.tetromino.append(Square(offset + i, 0, cell_points_gap, square_length, cell_start_point))
-        self.tetromino.append(Square(offset + 3, 1, cell_points_gap, square_length, cell_start_point))
+        for i in range(3):
+            self.tetromino.append(Square(i, 0, cell_points_gap, square_length, cell_start_point))
+        self.tetromino.append(Square(0, 1, cell_points_gap, square_length, cell_start_point))
         self.rotate_position = 0
         self.rotation = [
             np.array([[0, 0], [0, 0], [-1, 2], [-1, 2]]),
@@ -81,15 +105,21 @@ class Tetromino_L:
         ]
         self.rotation_steps = len(self.rotation)
 
+    def move_to_center(self):
+        offset = random.randrange(0, 2)
+        for i in range(4):
+            self.tetromino[i].grid_pos_x += 3 + offset
+            self.tetromino[i].update_rect_topleft()
+
 
 class Tetromino_S:
     def __init__(self, cell_points_gap, square_length, cell_start_point):
-        offset = random.randrange(0, 2)
+        self.shape = "S"
         self.tetromino = [
-            Square(offset + 4, 0, cell_points_gap, square_length, cell_start_point),
-            Square(offset + 5, 0, cell_points_gap, square_length, cell_start_point),
-            Square(offset + 3, 1, cell_points_gap, square_length, cell_start_point),
-            Square(offset + 4, 1, cell_points_gap, square_length, cell_start_point)
+            Square(1, 0, cell_points_gap, square_length, cell_start_point),
+            Square(2, 0, cell_points_gap, square_length, cell_start_point),
+            Square(0, 1, cell_points_gap, square_length, cell_start_point),
+            Square(1, 1, cell_points_gap, square_length, cell_start_point)
         ]
         self.rotate_position = 0
         self.rotation = [
@@ -100,15 +130,21 @@ class Tetromino_S:
         ]
         self.rotation_steps = len(self.rotation)
 
+    def move_to_center(self):
+        offset = random.randrange(0, 2)
+        for i in range(4):
+            self.tetromino[i].grid_pos_x += 3 + offset
+            self.tetromino[i].update_rect_topleft()
+
 
 class Tetromino_Z:
     def __init__(self, cell_points_gap, square_length, cell_start_point):
-        offset = random.randrange(0, 2)
+        self.shape = "Z"
         self.tetromino = [
-            Square(offset + 3, 0, cell_points_gap, square_length, cell_start_point),
-            Square(offset + 4, 0, cell_points_gap, square_length, cell_start_point),
-            Square(offset + 4, 1, cell_points_gap, square_length, cell_start_point),
-            Square(offset + 5, 1, cell_points_gap, square_length, cell_start_point)
+            Square(0, 0, cell_points_gap, square_length, cell_start_point),
+            Square(1, 0, cell_points_gap, square_length, cell_start_point),
+            Square(1, 1, cell_points_gap, square_length, cell_start_point),
+            Square(2, 1, cell_points_gap, square_length, cell_start_point)
         ]
         self.rotate_position = 0
         self.rotation = [
@@ -119,37 +155,72 @@ class Tetromino_Z:
         ]
         self.rotation_steps = len(self.rotation)
 
+    def move_to_center(self):
+        offset = random.randrange(0, 2)
+        for i in range(4):
+            self.tetromino[i].grid_pos_x += 3 + offset
+            self.tetromino[i].update_rect_topleft()
+
 
 class Tetromino(pygame.sprite.Group):
-    def __init__(self, cell_points_gap, square_length, cell_start_point):
+    def __init__(self, cell_points_gap, square_length, grid_start_point,
+                 move_to_center=True, shape="RANDOM", sprites=None):
         super().__init__()
+        self.grid_start_point = grid_start_point
         self.movement = True
         self.collision = False
+        self.failed_to_place = False
         self.updated_sprites = []
         self.count_sprite_update = 0
-        self.random_tetromino = random.choice([Tetromino_Z, Tetromino_O, Tetromino_I, Tetromino_J,
-                                               Tetromino_L, Tetromino_S,
-                                               Tetromino_T])(cell_points_gap, square_length, cell_start_point)
+        if shape == "Z":
+            self.tetromino_object = Tetromino_Z(cell_points_gap, square_length, grid_start_point)
+        elif shape == "O":
+            self.tetromino_object = Tetromino_O(cell_points_gap, square_length, grid_start_point)
+        elif shape == "I":
+            self.tetromino_object = Tetromino_I(cell_points_gap, square_length, grid_start_point)
+        elif shape == "J":
+            self.tetromino_object = Tetromino_J(cell_points_gap, square_length, grid_start_point)
+        elif shape == "L":
+            self.tetromino_object = Tetromino_L(cell_points_gap, square_length, grid_start_point)
+        elif shape == "S":
+            self.tetromino_object = Tetromino_S(cell_points_gap, square_length, grid_start_point)
+        elif shape == "T":
+            self.tetromino_object = Tetromino_T(cell_points_gap, square_length, grid_start_point)
+        else:
+            self.tetromino_object = random.choice([Tetromino_Z, Tetromino_O, Tetromino_I, Tetromino_J,
+                                                   Tetromino_L, Tetromino_S,
+                                                   Tetromino_T])(cell_points_gap, square_length, grid_start_point)
         # self.random_tetromino = Tetromino_L(cell_points_gap, square_length, cell_start_point)
-        self.add(self.random_tetromino.tetromino)
+        print(self.tetromino_object.shape)
+        if move_to_center:
+            self.tetromino_object.move_to_center()
+        # noinspection PyTypeChecker
+        self.add(self.tetromino_object.tetromino)
+        if sprites is not None:
+            # noinspection PyTypeChecker
+            if len(pygame.sprite.groupcollide(self, sprites, False, False)) != 0:
+                self.failed_to_place = True
         self.prev = None
 
     def rotate(self, square_group):
         list_xy = np.array(sorted([(square.grid_pos_x, square.grid_pos_y)
-                                   for square in self.random_tetromino.tetromino]))
+                                   for square in self.tetromino_object.tetromino]))
         # print(list_xy)
-        rotated_list_xy = np.add(list_xy, self.random_tetromino.rotation[self.random_tetromino.rotate_position])
+        rotated_list_xy = np.add(list_xy, self.tetromino_object.rotation[self.tetromino_object.rotate_position])
         for i in range(4):
-            if self.random_tetromino.tetromino[i].set_xy(rotated_list_xy[i][0], rotated_list_xy[i][1], square_group):
+            if self.tetromino_object.tetromino[i].set_xy(rotated_list_xy[i][0], rotated_list_xy[i][1], square_group):
                 for j in range(4):
-                    self.random_tetromino.tetromino[j].set_xy(list_xy[j][0], list_xy[j][1], SquareRowGroup())
+                    self.tetromino_object.tetromino[j].set_xy(list_xy[j][0], list_xy[j][1], SquareRowGroup())
                 return
-        self.random_tetromino.rotate_position += 1
-        self.random_tetromino.rotate_position %= self.random_tetromino.rotation_steps
+        self.tetromino_object.rotate_position += 1
+        self.tetromino_object.rotate_position %= self.tetromino_object.rotation_steps
+
+    def get_shape(self):
+        return self.tetromino_object.shape
 
     def check(self):
         current = np.array(sorted([(square.grid_pos_x, square.grid_pos_y)
-                                   for square in self.random_tetromino.tetromino]))
+                                   for square in self.tetromino_object.tetromino]))
         print(current.tolist())
         if self.prev is None:
             self.prev = current
