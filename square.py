@@ -58,7 +58,10 @@ class Square(pygame.sprite.Sprite):
                                  self.cell_start_point[1] + self.grid_pos_y * self.cell_points_gap)
             group_to_move.updated_sprites.append((self, direction))
             # print(group_to_move.updated_sprites)
-            collided_sprites = pygame.sprite.groupcollide(group_to_move, square_row_group, False, False)
+            collided_sprites = pygame.sprite.groupcollide(group_to_move,
+                                                          sum([_.sprites() for _ in square_row_group], []),
+                                                          False,
+                                                          False)
             # print(collided_sprites)
             if group_to_move.collision or len(collided_sprites) != 0:
                 print("Collision")
@@ -70,5 +73,3 @@ class Square(pygame.sprite.Sprite):
             group_to_move.count_sprite_update = 0
             group_to_move.collision = False
             group_to_move.updated_sprites = []
-
-
