@@ -215,18 +215,24 @@ class Tetromino(pygame.sprite.Group):
         self.prev = None
 
     # Function to rotate tetromino
-    def rotate(self, square_group):
+    def rotate(self, square_group, direction):
         list_xy = np.array(sorted([(square.grid_pos_x, square.grid_pos_y)
                                    for square in self.tetromino_object.tetromino]))
         # print(list_xy)
-        rotated_list_xy = np.add(list_xy, self.tetromino_object.rotation[self.tetromino_object.rotate_position])
+        if direction == 1:
+            rotated_list_xy = np.add(list_xy, self.tetromino_object.rotation[self.tetromino_object.rotate_position])
+        else:
+            self.tetromino_object.rotate_position += 1 * direction
+            self.tetromino_object.rotate_position %= self.tetromino_object.rotation_steps
+            rotated_list_xy = np.subtract(list_xy, self.tetromino_object.rotation[self.tetromino_object.rotate_position])
         for i in range(4):
             if self.tetromino_object.tetromino[i].set_xy(rotated_list_xy[i][0], rotated_list_xy[i][1], square_group):
                 for j in range(4):
                     self.tetromino_object.tetromino[j].set_xy(list_xy[j][0], list_xy[j][1], SquareRowGroup())
                 return
-        self.tetromino_object.rotate_position += 1
-        self.tetromino_object.rotate_position %= self.tetromino_object.rotation_steps
+        if direction == 1:
+            self.tetromino_object.rotate_position += 1 * direction
+            self.tetromino_object.rotate_position %= self.tetromino_object.rotation_steps
 
     # return type of the tetromino
     def get_shape(self):

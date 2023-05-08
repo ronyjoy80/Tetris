@@ -177,8 +177,10 @@ class GamePlay:
                 elif event.key == pygame.K_UP and self.cheat:
                     # move tetromino up
                     self.tetromino.update("UP", self.tetromino, SquareRowGroup())
-                elif event.key == pygame.K_r:
-                    self.tetromino.rotate(sum([_.sprites() for _ in self.square_row_group], []))
+                elif event.key == pygame.K_q:
+                    self.tetromino.rotate(sum([_.sprites() for _ in self.square_row_group], []), 1)
+                elif event.key == pygame.K_e:
+                    self.tetromino.rotate(sum([_.sprites() for _ in self.square_row_group], []), -1)
                 elif event.key == pygame.K_h and self.cheat:
                     self.tetromino.check()
                 elif event.key == pygame.K_p and self.cheat:
