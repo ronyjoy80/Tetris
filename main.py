@@ -45,6 +45,7 @@ class Tetris:
 
         # Initialize game state to intro page
         self.game_state = "start_page"
+        print(self.game_state)
         # Load image from file and convert to the same pixel format  fo screen which makes bliting faster
         image = pygame.image.load("Resource/start_page.png").convert()
         # scaling the image
@@ -67,6 +68,7 @@ class Tetris:
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_RETURN:
                     self.game_state = "game_play"
+                    print(self.game_state)
                     self.game_play = GamePlay(self.screen, self.square_length, self.square_offset)
         self.screen.blit(self.start_page_bdg, (0, 0))
         self.screen.blit(self.image_press_enter[0], self.image_press_enter[1])
@@ -82,6 +84,7 @@ class Tetris:
                 self.score = self.game_play.score
                 self.level = self.game_play.level
                 self.game_state = "end_page"
+                print(self.game_state)
                 self.end_page = EndPage(self.screen, self.score, self.level)
         elif self.game_state == "end_page":
             self.speed = 60

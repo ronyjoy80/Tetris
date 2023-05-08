@@ -167,6 +167,7 @@ class GamePlay:
                     # move tetromino Down
                     self.tetromino.update("DOWN", self.tetromino, self.square_row_group)
                     self.new_tetromino()
+                    self.speed = 60
                 elif event.key == pygame.K_LEFT:
                     # move tetromino Left
                     self.tetromino.update("LEFT", self.tetromino, self.square_row_group)
@@ -197,6 +198,9 @@ class GamePlay:
                                                         shape=chr(event.key).upper())
                 if self.next_tetromino.failed_to_place:
                     self.game_over = True
+            elif event.type == pygame.KEYUP:
+                if event.key == pygame.K_DOWN:
+                    self.speed = self.cycle_time / self.level_speed[self.level]
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 print(pygame.mouse.get_pos())
 
@@ -210,7 +214,6 @@ class GamePlay:
             self.square_row_group[i].draw(self.screen)
 
         self.game_statistic.draw_statistic()
-
         self.blit_rect(self.image_next)
         self.next_tetromino_display[self.next_tetromino.get_shape()].draw(self.screen)
 
