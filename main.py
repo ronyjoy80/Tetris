@@ -13,9 +13,10 @@ WHITE = (255, 255, 255)
 #       rect = create a rectangle around an image and store that dimensions
 #
 # Game Controls:
-#       Movement of tetromino   = left, down, right arrow key
-#       Rotate tetromino        = R
-#   Cheat Keys: press crt + shift + x to goto cheat mode
+#       Movement of Tetromino   = left, down, right arrow key
+#       Rotate Tetromino Left   = Q
+#       Rotate Tetromino Right  = E
+#   Cheat Keys: press crt + shift + x to activate cheat mode
 #       Move tetromino to up    = up arrow key
 #       Pause                   = p
 #       Game Over               = g
