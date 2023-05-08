@@ -6,6 +6,7 @@ WHITE = (255, 255, 255)
 RED = (255, 0, 0)
 
 
+# Class to display the last Page
 class EndPage:
     def __init__(self, screen, score, level):
         self.screen = screen
@@ -35,7 +36,8 @@ class EndPage:
         else:
             self.image_msg = [draw_text_center("BETTER", WHITE, screen_w, 250, 27),
                               draw_text_center("LUCK", RED, screen_w, 300, 27),
-                              draw_text_center("NEXT TIME", WHITE, screen_w, 350, 27)]
+                              draw_text_center("NEXT TIME", WHITE, screen_w, 350, 27),
+                              draw_text_center("PRESS ENTER TO RESTART", WHITE, screen_w, 410, 27)]
 
         image = pygame.image.load("Resource/end_page.png").convert()
         self.bgd_image = pygame.transform.scale(image, self.screen.get_size())
@@ -52,6 +54,7 @@ class EndPage:
                                                                (rank_start_x + rank_gap_x[i], y), 27))
         # print(self.image_high_score)
 
+    # function to retrieve high score information from  file "high_score.txt"
     def get_high_score(self):
         f = open("Resource/high_score.txt", 'r')
         while True:
@@ -63,15 +66,18 @@ class EndPage:
                 self.high_score[int(c[0])] = c[1:]
         f.close()
 
+    # function to write high score information from  file "high_score.txt"
     def write_to_file(self):
         f = open("Resource/high_score.txt", 'w')
         for rank in range(1, 4):
             f.write(f"{rank}\t{self.high_score[rank][0]}\t{self.high_score[rank][1]}\t{self.high_score[rank][2]}\n")
         f.close()
 
+    # function to blit image with rect
     def blit_rect(self, image):
         self.screen.blit(image[0], image[1])
 
+    # event loop of the end page
     def run(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:

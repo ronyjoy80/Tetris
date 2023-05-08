@@ -9,6 +9,7 @@ WHITE = (255, 255, 255)
 
 class GamePlay:
     def __init__(self, screen, square_length, square_offset):
+        self.cheat = False
         self.screen = screen
         self.square_length = square_length
         self.square_offset = square_offset
@@ -89,6 +90,7 @@ class GamePlay:
         self.image_level = draw_text_topleft("LEVEL", WHITE, (level_x, level_y), 27)
         self.image_level_val = draw_text_topleft("00", WHITE, (level_x + 55, level_y + 40), 27)
 
+    # Function to increment the level
     def level_inc(self):
         self.level += 1
         self.image_level_val = draw_text_topleft(f"{self.level:02}", WHITE, self.image_level_val[1].topleft, 27)
@@ -102,6 +104,7 @@ class GamePlay:
         for shape in ["Z", "J", "L", "S", "T", "I", "O"]:
             self.next_tetromino_display[shape].update(color=self.color)
 
+    # Function to transfer sprites from "Tetromino" to "SquareRowGroup" object and calculate scores, level up, lines
     def tetromino_to_square_row_group(self):
         for sprite in self.tetromino.sprites():
             self.square_row_group[sprite.grid_pos_y].add(sprite)
@@ -135,6 +138,7 @@ class GamePlay:
             self.image_lines_count = draw_text_topleft(f"{self.lines:03}", WHITE, self.image_lines_count[1].topleft, 30)
         self.tetromino.empty()
 
+    # Creating new tetromino after current tetromino movement stops
     def new_tetromino(self):
         if not self.tetromino.movement:
             self.tetromino_count[self.tetromino.tetromino_object.shape] += 1
@@ -147,9 +151,11 @@ class GamePlay:
             if self.next_tetromino.failed_to_place:
                 self.game_over = True
 
+    # function to blit an image using rect of the image to the screen
     def blit_rect(self, image):
         self.screen.blit(image[0], image[1])
 
+    # event loop of game play
     def run(self):
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -158,30 +164,37 @@ class GamePlay:
             elif event.type == pygame.KEYDOWN:
                 # print(event.key)
                 if event.key == pygame.K_DOWN:
+                    # move tetromino Down
                     self.tetromino.update("DOWN", self.tetromino, self.square_row_group)
                     self.new_tetromino()
                 elif event.key == pygame.K_LEFT:
+                    # move tetromino Left
                     self.tetromino.update("LEFT", self.tetromino, self.square_row_group)
                 elif event.key == pygame.K_RIGHT:
+                    # move tetromino Right
                     self.tetromino.update("RIGHT", self.tetromino, self.square_row_group)
-                elif event.key == pygame.K_UP:
+                elif event.key == pygame.K_UP and self.cheat:
+                    # move tetromino up
                     self.tetromino.update("UP", self.tetromino, SquareRowGroup())
                 elif event.key == pygame.K_r:
                     self.tetromino.rotate(sum([_.sprites() for _ in self.square_row_group], []))
-                elif event.key == pygame.K_h:
+                elif event.key == pygame.K_h and self.cheat:
                     self.tetromino.check()
-                elif event.key == pygame.K_p:
+                elif event.key == pygame.K_p and self.cheat:
                     self.pause = not self.pause
-                elif event.key == pygame.K_g:
+                elif event.key == pygame.K_g and self.cheat:
                     self.game_over = True
-                elif event.key == pygame.K_c:
+                elif event.key == pygame.K_c and self.cheat:
                     self.level_inc()
+                elif event.key == pygame.K_x and event.mod & pygame.KMOD_SHIFT and event.mod & pygame.KMOD_CTRL:
+                    self.cheat = not self.cheat
                 elif event.key in [pygame.K_i, pygame.K_o, pygame.K_j, pygame.K_l, pygame.K_z, pygame.K_s, pygame.K_t]:
-                    # noinspection PyTypeChecker
-                    self.next_tetromino = Tetromino(self.cell_points_gap, self.square_length, self.grid_start_point,
-                                                    self.color,
-                                                    sprites=sum([_.sprites() for _ in self.square_row_group], []),
-                                                    shape=chr(event.key).upper())
+                    if self.cheat:
+                        # noinspection PyTypeChecker
+                        self.next_tetromino = Tetromino(self.cell_points_gap, self.square_length, self.grid_start_point,
+                                                        self.color,
+                                                        sprites=sum([_.sprites() for _ in self.square_row_group], []),
+                                                        shape=chr(event.key).upper())
                 if self.next_tetromino.failed_to_place:
                     self.game_over = True
             elif event.type == pygame.MOUSEBUTTONDOWN:
