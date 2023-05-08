@@ -222,16 +222,17 @@ class Tetromino(pygame.sprite.Group):
         if direction == 1:
             rotated_list_xy = np.add(list_xy, self.tetromino_object.rotation[self.tetromino_object.rotate_position])
         else:
-            self.tetromino_object.rotate_position += 1 * direction
+            self.tetromino_object.rotate_position -= 1
             self.tetromino_object.rotate_position %= self.tetromino_object.rotation_steps
-            rotated_list_xy = np.subtract(list_xy, self.tetromino_object.rotation[self.tetromino_object.rotate_position])
+            rotated_list_xy = np.subtract(list_xy,
+                                          self.tetromino_object.rotation[self.tetromino_object.rotate_position])
         for i in range(4):
             if self.tetromino_object.tetromino[i].set_xy(rotated_list_xy[i][0], rotated_list_xy[i][1], square_group):
                 for j in range(4):
                     self.tetromino_object.tetromino[j].set_xy(list_xy[j][0], list_xy[j][1], SquareRowGroup())
                 return
         if direction == 1:
-            self.tetromino_object.rotate_position += 1 * direction
+            self.tetromino_object.rotate_position += 1
             self.tetromino_object.rotate_position %= self.tetromino_object.rotation_steps
 
     # return type of the tetromino
@@ -247,6 +248,7 @@ class Tetromino(pygame.sprite.Group):
             self.prev = current
         else:
             print(np.subtract(current, self.prev).tolist())
+            self.prev = current
 
 
 # Class inherited sprite.Group to handle the Square sprite in each row of play area
