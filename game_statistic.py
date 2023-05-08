@@ -6,6 +6,7 @@ from utils import draw_text_topleft
 WHITE = (255, 255, 255)
 
 
+# class to display game statistic
 class GameStatistic:
     def __init__(self, screen, **kwargs):
         self.screen = screen

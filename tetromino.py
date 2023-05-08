@@ -5,6 +5,7 @@ import pygame.sprite
 from square import Square
 
 
+# Class of seven different Tetromino
 class Tetromino_I:
     def __init__(self, cell_points_gap, square_length, cell_start_point, color, design):
         self.shape = "I"
@@ -20,6 +21,7 @@ class Tetromino_I:
         ]
         self.rotation_steps = len(self.rotation)
 
+    # Function to move tetromino to center of play area
     def move_to_center(self):
         for i in range(4):
             self.tetromino[i].grid_pos_x += 3
@@ -37,6 +39,7 @@ class Tetromino_O:
         self.rotation = [np.array([[0, 0], [0, 0], [0, 0], [0, 0]])]
         self.rotation_steps = len(self.rotation)
 
+    # Function to move tetromino to center of play area
     def move_to_center(self):
         for i in range(4):
             self.tetromino[i].grid_pos_x += 4
@@ -59,6 +62,7 @@ class Tetromino_T:
         ]
         self.rotation_steps = len(self.rotation)
 
+    # Function to move tetromino to center of play area
     def move_to_center(self):
         offset = random.randrange(0, 2)
         for i in range(4):
@@ -82,6 +86,7 @@ class Tetromino_J:
         ]
         self.rotation_steps = len(self.rotation)
 
+    # Function to move tetromino to center of play area
     def move_to_center(self):
         offset = random.randrange(0, 2)
         for i in range(4):
@@ -105,6 +110,7 @@ class Tetromino_L:
         ]
         self.rotation_steps = len(self.rotation)
 
+    # Function to move tetromino to center of play area
     def move_to_center(self):
         offset = random.randrange(0, 2)
         for i in range(4):
@@ -130,6 +136,7 @@ class Tetromino_S:
         ]
         self.rotation_steps = len(self.rotation)
 
+    # Function to move tetromino to center of play area
     def move_to_center(self):
         offset = random.randrange(0, 2)
         for i in range(4):
@@ -155,6 +162,7 @@ class Tetromino_Z:
         ]
         self.rotation_steps = len(self.rotation)
 
+    # Function to move tetromino to center of play area
     def move_to_center(self):
         offset = random.randrange(0, 2)
         for i in range(4):
@@ -162,6 +170,8 @@ class Tetromino_Z:
             self.tetromino[i].update_rect_topleft()
 
 
+# Class to create random tetromino
+# this class is a sprite.Group which handles updates of Class Square Objects
 class Tetromino(pygame.sprite.Group):
     def __init__(self, cell_points_gap, square_length, grid_start_point, colors,
                  move_to_center=True, shape="RANDOM", sprites=None):
@@ -193,7 +203,7 @@ class Tetromino(pygame.sprite.Group):
                                                    Tetromino_L, Tetromino_S, Tetromino_T
                                                    ])(cell_points_gap, square_length, grid_start_point, color, design)
         # self.random_tetromino = Tetromino_L(cell_points_gap, square_length, cell_start_point)
-        print(self.tetromino_object.shape)
+        # print(self.tetromino_object.shape)
         if move_to_center:
             self.tetromino_object.move_to_center()
         # noinspection PyTypeChecker
@@ -204,6 +214,7 @@ class Tetromino(pygame.sprite.Group):
                 self.failed_to_place = True
         self.prev = None
 
+    # Function to rotate tetromino
     def rotate(self, square_group):
         list_xy = np.array(sorted([(square.grid_pos_x, square.grid_pos_y)
                                    for square in self.tetromino_object.tetromino]))
@@ -217,9 +228,11 @@ class Tetromino(pygame.sprite.Group):
         self.tetromino_object.rotate_position += 1
         self.tetromino_object.rotate_position %= self.tetromino_object.rotation_steps
 
+    # return type of the tetromino
     def get_shape(self):
         return self.tetromino_object.shape
 
+    # part of Cheat Function
     def check(self):
         current = np.array(sorted([(square.grid_pos_x, square.grid_pos_y)
                                    for square in self.tetromino_object.tetromino]))
@@ -230,6 +243,7 @@ class Tetromino(pygame.sprite.Group):
             print(np.subtract(current, self.prev).tolist())
 
 
+# Class inherited sprite.Group to handle the Square sprite in each row of play area
 class SquareRowGroup(pygame.sprite.Group):
     def __init__(self):
         super().__init__()

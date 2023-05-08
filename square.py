@@ -1,6 +1,7 @@
 import pygame
 
 
+# Class to design each individual squares in tetrominos
 class Square(pygame.sprite.Sprite):
     def __init__(self, x, y, cell_points_gap, square_length, grid_start_point, color, design):
         super().__init__()
@@ -19,10 +20,12 @@ class Square(pygame.sprite.Sprite):
         self.rect.topleft = (self.grid_start_point[0] + self.grid_pos_x * self.cell_points_gap,
                              self.grid_start_point[1] + self.grid_pos_y * self.cell_points_gap)
 
+    # update topleft position of the rect
     def update_rect_topleft(self):
         self.rect.topleft = (self.grid_start_point[0] + self.grid_pos_x * self.cell_points_gap,
                              self.grid_start_point[1] + self.grid_pos_y * self.cell_points_gap)
 
+    # update topleft position of the rect using play area grid system
     def set_xy(self, x, y, square_group):
         if 0 <= x <= 9 and 0 <= y <= 19:
             self.grid_pos_x = x
@@ -35,6 +38,7 @@ class Square(pygame.sprite.Sprite):
             return True
         return False
 
+    # reverse the up, down left, right movement
     def reverse_update(self, direction):
         if direction == "LEFT":
             self.grid_pos_x += 1
@@ -47,6 +51,7 @@ class Square(pygame.sprite.Sprite):
         self.rect.topleft = (self.grid_start_point[0] + self.grid_pos_x * self.cell_points_gap,
                              self.grid_start_point[1] + self.grid_pos_y * self.cell_points_gap)
 
+    # Update the color or the position of each Square and check for collision
     def update(self, direction=None, group_to_move=None, square_row_group=None, color=None):
         if direction is not None and group_to_move is not None and  square_row_group is not None:
             group_to_move.count_sprite_update += 1
@@ -72,7 +77,7 @@ class Square(pygame.sprite.Sprite):
                                                               False)
                 # print(collided_sprites)
                 if group_to_move.collision or len(collided_sprites) != 0:
-                    print("Collision")
+                    # print("Collision")
                     group_to_move.collision = True
                     group_to_move.movement = False if direction == "DOWN" else group_to_move.movement
                     for square, rev_direction in group_to_move.updated_sprites:
