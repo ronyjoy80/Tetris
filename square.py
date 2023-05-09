@@ -3,16 +3,18 @@ import pygame
 
 # Class to design each individual squares in tetrominos
 class Square(pygame.sprite.Sprite):
-    def __init__(self, x, y, cell_points_gap, square_length, grid_start_point, color, design):
+    def __init__(self, x, y, cell_points_gap, square_length, grid_start_point, colors, design):
         super().__init__()
         self.design = design
+        self.colors = colors
         self.cell_points_gap = cell_points_gap
         self.grid_start_point = grid_start_point
+        self.square_length = square_length
 
         random_shade = pygame.image.load(("Resource/shade_1.png", "Resource/shade_2.png")[design[1]]).convert_alpha()
         self.shade = pygame.transform.scale(random_shade, (square_length,) * 2)
         self.image = pygame.Surface((square_length,) * 2)
-        self.image.fill(color)
+        self.image.fill(self.colors[self.design[0]])
         self.image.blit(self.shade, (0, 0))
         self.rect = self.image.get_rect()
         self.grid_pos_x = x
@@ -52,8 +54,8 @@ class Square(pygame.sprite.Sprite):
                              self.grid_start_point[1] + self.grid_pos_y * self.cell_points_gap)
 
     # Update the color or the position of each Square and check for collision
-    def update(self, direction=None, group_to_move=None, square_row_group=None, color=None):
-        if direction is not None and group_to_move is not None and  square_row_group is not None:
+    def update(self, direction=None, group_to_move=None, square_row_group=None, colors=None, design=None):
+        if direction is not None and group_to_move is not None and square_row_group is not None:
             group_to_move.count_sprite_update += 1
             if not group_to_move.collision:
                 if direction == "LEFT":
@@ -86,6 +88,13 @@ class Square(pygame.sprite.Sprite):
                 group_to_move.count_sprite_update = 0
                 group_to_move.collision = False
                 group_to_move.updated_sprites = []
-        elif color is not None:
-            self.image.fill(color[self.design[0]])
+        elif colors is not None:
+            self.colors = colors
+            self.image.fill(self.colors[self.design[0]])
+            self.image.blit(self.shade, (0, 0))
+        elif design is not None:
+            self.design = design
+            shade = pygame.image.load(("Resource/shade_1.png", "Resource/shade_2.png")[design[1]]).convert_alpha()
+            self.shade = pygame.transform.scale(shade, (self.square_length,) * 2)
+            self.image.fill(self.colors[self.design[0]])
             self.image.blit(self.shade, (0, 0))

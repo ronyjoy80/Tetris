@@ -176,8 +176,7 @@ class Tetromino(pygame.sprite.Group):
     def __init__(self, cell_points_gap, square_length, grid_start_point, colors,
                  move_to_center=True, shape="RANDOM", sprites=None):
         super().__init__()
-        design = (random.randrange(2), random.randrange(2))
-        color = colors[design[0]]
+        self.design = (random.randrange(2), random.randrange(2))
         self.grid_start_point = grid_start_point
         self.movement = True
         self.collision = False
@@ -185,23 +184,24 @@ class Tetromino(pygame.sprite.Group):
         self.updated_sprites = []
         self.count_sprite_update = 0
         if shape == "Z":
-            self.tetromino_object = Tetromino_Z(cell_points_gap, square_length, grid_start_point, color, design)
+            self.tetromino_object = Tetromino_Z(cell_points_gap, square_length, grid_start_point, colors, self.design)
         elif shape == "O":
-            self.tetromino_object = Tetromino_O(cell_points_gap, square_length, grid_start_point, color, design)
+            self.tetromino_object = Tetromino_O(cell_points_gap, square_length, grid_start_point, colors, self.design)
         elif shape == "I":
-            self.tetromino_object = Tetromino_I(cell_points_gap, square_length, grid_start_point, color, design)
+            self.tetromino_object = Tetromino_I(cell_points_gap, square_length, grid_start_point, colors, self.design)
         elif shape == "J":
-            self.tetromino_object = Tetromino_J(cell_points_gap, square_length, grid_start_point, color, design)
+            self.tetromino_object = Tetromino_J(cell_points_gap, square_length, grid_start_point, colors, self.design)
         elif shape == "L":
-            self.tetromino_object = Tetromino_L(cell_points_gap, square_length, grid_start_point, color, design)
+            self.tetromino_object = Tetromino_L(cell_points_gap, square_length, grid_start_point, colors, self.design)
         elif shape == "S":
-            self.tetromino_object = Tetromino_S(cell_points_gap, square_length, grid_start_point, color, design)
+            self.tetromino_object = Tetromino_S(cell_points_gap, square_length, grid_start_point, colors, self.design)
         elif shape == "T":
-            self.tetromino_object = Tetromino_T(cell_points_gap, square_length, grid_start_point, color, design)
+            self.tetromino_object = Tetromino_T(cell_points_gap, square_length, grid_start_point, colors, self.design)
         else:
             self.tetromino_object = random.choice([Tetromino_Z, Tetromino_O, Tetromino_I, Tetromino_J,
                                                    Tetromino_L, Tetromino_S, Tetromino_T
-                                                   ])(cell_points_gap, square_length, grid_start_point, color, design)
+                                                   ])(cell_points_gap, square_length, grid_start_point, colors,
+                                                      self.design)
         # self.random_tetromino = Tetromino_L(cell_points_gap, square_length, cell_start_point)
         # print(self.tetromino_object.shape)
         if move_to_center:
@@ -238,6 +238,10 @@ class Tetromino(pygame.sprite.Group):
     # return type of the tetromino
     def get_shape(self):
         return self.tetromino_object.shape
+
+    # return design of tetromino
+    def get_design(self):
+        return self.design
 
     # part of Cheat Function
     def check(self):
