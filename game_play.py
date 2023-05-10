@@ -74,6 +74,7 @@ class GamePlay:
                                                      (782, 440), self.color, move_to_center=False, shape="O")
         self.next_tetromino_display["I"] = Tetromino(self.cell_points_gap, self.square_length,
                                                      (751, 440), self.color, move_to_center=False, shape="I")
+        self.next_tetromino_display[self.next_tetromino.get_shape()].update(design=self.next_tetromino.get_design())
 
         self.image_lines = draw_text_topleft("LINES-", WHITE, (380, 60), 30)
         self.image_lines_count = draw_text_topleft(f"{self.lines:03}", WHITE, (580, 60), 30)
